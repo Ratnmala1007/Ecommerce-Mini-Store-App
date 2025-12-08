@@ -1,0 +1,102 @@
+Ah! That explains why you can’t download it — the sandbox here doesn’t always allow direct file download links for Postman JSON files. No worries, I can give you the **full Postman collection JSON content** directly. You can then **copy it into a `.json` file locally** and import it into Postman.
+
+Here’s the full Postman collection content:
+
+```json
+{
+  "info": {
+    "name": "E-Commerce API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register User",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "url": {"raw": "http://localhost:8080/api/auth/register", "protocol": "http","host":["localhost"],"port":"8080","path":["api","auth","register"]},
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"user1\",\n  \"password\": \"user123\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Login User",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "url": {"raw": "http://localhost:8080/api/auth/login", "protocol": "http","host":["localhost"],"port":"8080","path":["api","auth","login"]},
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"user1\",\n  \"password\": \"user123\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Get All Products",
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization","value": "Bearer {{JWT_TOKEN}}"}],
+        "url": {"raw": "http://localhost:8080/api/products","protocol":"http","host":["localhost"],"port":"8080","path":["api","products"]}
+      }
+    },
+    {
+      "name": "Add Product (Admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type","value": "application/json"},
+          {"key": "Authorization","value": "Bearer {{ADMIN_JWT_TOKEN}}"}
+        ],
+        "url": {"raw": "http://localhost:8080/api/admin/products","protocol":"http","host":["localhost"],"port":"8080","path":["api","admin","products"]},
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Laptop\",\n  \"description\": \"Gaming Laptop\",\n  \"price\": 1200,\n  \"quantity\": 10,\n  \"categoryId\": 1\n}"
+        }
+      }
+    },
+    {
+      "name": "Add Item to Cart",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type","value": "application/json"},
+          {"key": "Authorization","value": "Bearer {{JWT_TOKEN}}"}
+        ],
+        "url": {"raw": "http://localhost:8080/api/cart/add","protocol":"http","host":["localhost"],"port":"8080","path":["api","cart","add"]},
+        "body": {"mode":"raw","raw":"{\n  \"productId\":1,\n  \"quantity\":2\n}"}
+      }
+    },
+    {
+      "name": "Checkout / Place Order",
+      "request": {
+        "method": "POST",
+        "header": [{"key":"Authorization","value":"Bearer {{JWT_TOKEN}}"}],
+        "url": {"raw":"http://localhost:8080/api/orders/checkout","protocol":"http","host":["localhost"],"port":"8080","path":["api","orders","checkout"]},
+        "body": {"mode":"raw","raw":"{\n  \"paymentMethod\":\"CARD\",\n  \"amount\":2400\n}"}
+      }
+    }
+  ],
+  "variable":[
+    {"key":"JWT_TOKEN","value":""},
+    {"key":"ADMIN_JWT_TOKEN","value":""}
+  ]
+}
+```
+
+---
+
+### ✅ How to use:
+
+1. Copy all of the above JSON into a file called `ecommerce.postman_collection.json` on your computer.
+2. Open **Postman → Import → File → Select this JSON**.
+3. The collection will appear with all the requests.
+4. After login, copy the token and set it as the **`{{JWT_TOKEN}}`** variable.
+5. For admin endpoints, use the admin token in **`{{ADMIN_JWT_TOKEN}}`**.
+
+---
+
+If you want, I can **expand this JSON** to include **all CRUD endpoints (update, delete, get by id, view cart, admin orders)** so your Postman collection covers **every API**.
+
+Do you want me to do that?
