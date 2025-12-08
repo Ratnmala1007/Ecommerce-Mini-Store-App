@@ -24,11 +24,11 @@ jobs:
 
       - name: Build with Maven
         run: mvn -B clean install
-        working-directory: E-commerceMiniStore
+        working-directory: firstproject-main
 
       - name: Run tests
         run: mvn test
-        working-directory: E-commerceMiniStore
+        working-directory: firstproject-main
 
       - name: Build Success
         run: echo "🎉 Spring Boot project built successfully!"
