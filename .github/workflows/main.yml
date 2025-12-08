@@ -1,30 +1,42 @@
-name: spring-boot-ecommerce
+name: fullstack-ci
 
 on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
 
 jobs:
-  backend-build:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up JDK 21
+      # 🟩 Step 1 — Build Backend
+      - name: Setup JDK
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Build with Maven (skip tests)
-        run: mvn -B clean install -DskipTests
+      - name: Build Spring Boot Backend
+        run: mvn clean install -DskipTests
         working-directory: E-commerceMiniStore-main
 
-      - name: Build Success Message
-        run: echo "🎉 Spring Boot backend built successfully!"
+      # 🟦 Step 2 — Build Frontend
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install frontend dependencies
+        run: npm install
+        working-directory: firstproject-main
+
+      - name: Build React App
+        run: npm run build
+        working-directory: firstproject-main
+
+      - name: Build Success
+        run: echo "🎉 Full-stack build completed successfully!"
