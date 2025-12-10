@@ -77,7 +77,7 @@ E-Commerce-MiniStore/
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/Anmol283/E-commerceMiniStore
+   git clone https://github.com/Ratnmala1007/E-commerceMiniStore
    cd E-Commerce-MiniStore
    ```
 
