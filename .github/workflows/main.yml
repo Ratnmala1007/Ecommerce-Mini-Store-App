@@ -1,4 +1,4 @@
-name: fullstack-ci-cd
+name: Deploy to EC2
 
 on:
   push:
@@ -6,61 +6,41 @@ on:
       - master
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # 1. Checkout
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      # 2️⃣ Setup Java 21
-      - name: Setup Java 21
+      # 2. Setup Java
+      - name: Setup JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
-      # 3️⃣ Build Spring Boot Backend
-      - name: Build Spring Boot Backend
+      # 3. Build JAR
+      - name: Build project
         run: mvn clean install -DskipTests
-        working-directory: E-commerceMiniStore-main
 
-      # 4️⃣ Setup Node 18
-      - name: Setup Node 18
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+      # 4. Copy PEM Key
+      - name: Copy PEM key
+        run: echo "${{ secrets.EC2_SSH_KEY }}" > ministore-key.pem
 
-      # 5️⃣ Install frontend dependencies
-      - name: Install frontend dependencies
-        run: npm install
-        working-directory: react_app
+      # 5. Fix permissions
+      - name: Set PEM permissions
+        run: chmod 600 ministore-key.pem
 
-      # 6️⃣ Build React App
-      - name: Build React App
-        run: npm run build
-        working-directory: react_app
-
-      # 7️⃣ Prepare PEM Key from GitHub Secret
-      - name: Setup SSH Key
-        run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" > ministore-key.pem
-          chmod 600 ministore-key.pem
-
-      # 8️⃣ Ensure EC2 app directory exists
-      - name: Ensure EC2 app directory exists
-        run: |
-          ssh -i ministore-key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }} "mkdir -p /home/ubuntu/app/"
-
-      # 9️⃣ Copy JAR to EC2
-      - name: Copy JAR to EC2
+      # 6. Copy JAR to EC2
+      - name: Upload JAR to EC2
         run: |
           scp -i ministore-key.pem -o StrictHostKeyChecking=no \
-          E-commerceMiniStore-main/target/E-commerceMiniStore-0.0.1-SNAPSHOT.jar \
+          target/E-commerceMiniStore-0.0.1-SNAPSHOT.jar \
           ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }}:/home/ubuntu/app/
 
-      # 🔟 Restart App on EC2
+      # 7. Restart App
       - name: Restart App
         run: |
           ssh -i ministore-key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }} << 'EOF'
@@ -68,7 +48,3 @@ jobs:
           nohup java -jar /home/ubuntu/app/E-commerceMiniStore-0.0.1-SNAPSHOT.jar > /home/ubuntu/app/app.log 2>&1 &
           EOF
 
-
-      # 1️⃣1️⃣ Success message
-      - name: Build & Deploy Success
-        run: echo "🎉 Full-stack app deployed successfully!"
