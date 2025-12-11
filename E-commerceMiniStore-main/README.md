@@ -73,12 +73,13 @@ E-Commerce-MiniStore/
 - MySQL
 - Postman (for API testing)
 
-### Installation
+### Installation ##
+
 
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/Ratnmala1007/E-commerceMiniStore
-   cd E-Commerce-MiniStore
+   cd E-Commerce-MiniStore.
    ```
 
 2. **Configure Database**:
