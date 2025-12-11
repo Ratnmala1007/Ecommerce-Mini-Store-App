@@ -21,9 +21,10 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      # 3. Build JAR
-      - name: Build project
+      # 3️⃣ Build Spring Boot Backend
+      - name: Build Spring Boot Backend
         run: mvn clean install -DskipTests
+        working-directory: ./E-commerceMiniStore-main
 
       # 4. Copy PEM Key
       - name: Copy PEM key
