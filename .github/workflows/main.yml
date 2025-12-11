@@ -37,9 +37,9 @@ jobs:
       # 6. Copy JAR to EC2
       - name: Upload JAR to EC2
         run: |
-          scp -i ministore-key.pem -o StrictHostKeyChecking=no \
-          target/E-commerceMiniStore-0.0.1-SNAPSHOT.jar \
-          ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }}:/home/ubuntu/app/
+         scp -i ministore-key.pem -o StrictHostKeyChecking=no \
+         target/E-commerceMiniStore-0.0.1-SNAPSHOT.jar \
+         ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }}:/home/ubuntu/app/
 
       # 7. Restart App
       - name: Restart App
