@@ -62,8 +62,8 @@ E-Commerce-MiniStore/
 ├── 📄 README.md                       # Project documentation
 └── 📄 .gitignore                      # Git ignore file
 
-```
----
+````
+----
 ## 🚀 Getting Started
 
 ### Prerequisites
